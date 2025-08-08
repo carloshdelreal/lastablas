@@ -7,6 +7,7 @@ export function useGame() {
   const [rangeFrom, setRangeFrom] = useState<number>(1);
   const [rangeTo, setRangeTo] = useState<number>(10);
   const [repeatErrors, setRepeatErrors] = useState<boolean>(true);
+  const [voiceEnabled, setVoiceEnabled] = useState<boolean>(true);
 
   const [deck, setDeck] = useState<Question[]>([]);
   const [current, setCurrent] = useState<Question | null>(null);
@@ -67,6 +68,8 @@ export function useGame() {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    voiceEnabled,
+    setVoiceEnabled,
     // game state
     deck,
     current,

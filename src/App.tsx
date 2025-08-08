@@ -14,6 +14,8 @@ function App(): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    voiceEnabled,
+    setVoiceEnabled,
     deck,
     current,
     answer,
@@ -66,6 +68,8 @@ function App(): JSX.Element {
             setRangeTo={setRangeTo}
             repeatErrors={repeatErrors}
             setRepeatErrors={setRepeatErrors}
+            voiceEnabled={voiceEnabled}
+            setVoiceEnabled={setVoiceEnabled}
             onStart={start}
           />
         ) : current ? (
@@ -79,6 +83,7 @@ function App(): JSX.Element {
             setAnswer={setAnswer}
             onSubmit={handleSubmit}
             inputRef={answerInputRef}
+            voiceEnabled={voiceEnabled}
           />
         ) : (
           <Summary
