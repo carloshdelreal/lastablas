@@ -1,4 +1,4 @@
-// no imports needed
+import InputField from '../components/InputField';
 
 type SetupProps = {
   tablesInput: string;
@@ -27,34 +27,29 @@ export default function Setup(props: SetupProps): JSX.Element {
 
   return (
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
-      <div>
-        <label className="block text-sm font-medium mb-1">Tablas</label>
-        <input
-          value={tablesInput}
-          onChange={e => setTablesInput(e.target.value)}
-          placeholder="e.g., 2,3,5-7"
-          className="w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <p className="mt-1 text-xs text-gray-500">Acepta listas y rangos. Ejemplos: 2,3,5-7</p>
-      </div>
+      <InputField
+        label="Tablas"
+        value={tablesInput}
+        onChange={e => setTablesInput(e.target.value)}
+        placeholder="e.g., 2,3,5-7"
+        description="Acepta listas y rangos. Ejemplos: 2,3,5-7"
+      />
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Desde</label>
-          <input
+          <InputField
+            label="Desde"
             type="number"
             value={rangeFrom}
             onChange={e => setRangeFrom(Number(e.target.value))}
-            className="w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Hasta</label>
-          <input
+          <InputField
+            label="Hasta"
             type="number"
             value={rangeTo}
             onChange={e => setRangeTo(Number(e.target.value))}
-            className="w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
       </div>
