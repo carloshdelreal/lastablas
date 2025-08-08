@@ -8,7 +8,8 @@
     <script>
       (function(){
         var GTM_ID = '%VITE_GTM_ID%';
-        if (!GTM_ID || GTM_ID === '%VITE_GTM_ID%') return;
+        // Skip if not provided or placeholder wasn't replaced by Vite
+        if (!GTM_ID || GTM_ID.indexOf('%') !== -1) return;
         (function(w,d,s,l,i){
           w[l]=w[l]||[];
           w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
