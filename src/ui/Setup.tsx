@@ -71,7 +71,7 @@ export default function Setup(props: SetupProps): JSX.Element {
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Tablas disponibles
+          🎯 Tablas disponibles
         </label>
         <div className="grid grid-cols-5 gap-2">
           {Array.from({ length: 10 }, (_, i) => i + 1).map(tableNumber => {
@@ -93,7 +93,7 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
         {showError && selectedTables.length === 0 && (
           <p className="text-sm text-red-600 dark:text-red-400 mt-1">
-            Seleccione al menos una tabla por favor
+            ⚠️ Seleccione al menos una tabla por favor
           </p>
         )}
       </div>
@@ -101,7 +101,7 @@ export default function Setup(props: SetupProps): JSX.Element {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <InputField
-            label="Desde"
+            label="📊 Desde"
             type="number"
             value={rangeFrom}
             onChange={e => setRangeFrom(Number(e.target.value))}
@@ -109,7 +109,7 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
         <div>
           <InputField
-            label="Hasta"
+            label="📈 Hasta"
             type="number"
             value={rangeTo}
             onChange={e => setRangeTo(Number(e.target.value))}
@@ -125,13 +125,13 @@ export default function Setup(props: SetupProps): JSX.Element {
             onChange={e => setRepeatErrors(e.target.checked)}
             className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
           />
-          Repetir errores hasta acertarlos
+          🔄 Repetir errores hasta acertarlos
         </label>
         
         {speechService.isSupported() && (
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-700 dark:text-gray-300">
-              Activar voz
+              🎤 Activar voz
             </span>
             <button
               onClick={() => setVoiceEnabled(!voiceEnabled)}
@@ -156,7 +156,7 @@ export default function Setup(props: SetupProps): JSX.Element {
           onClick={handleStart}
           className="mt-2 w-full items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Comenzar
+          🚀 Comenzar
         </button>
       </div>
     </section>

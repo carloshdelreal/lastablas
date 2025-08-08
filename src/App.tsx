@@ -53,9 +53,9 @@ function App(): JSX.Element {
     <div className="min-h-full flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-2xl">
         <header className="mb-6">
-          <h1 className="text-3xl font-bold tracking-tight">Las Tablas</h1>
+          <h1 className="text-3xl font-bold tracking-tight">🧮 Las Tablas</h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Practica las tablas de multiplicar.
+            ✨ Practica las tablas de multiplicar de forma divertida
           </p>
         </header>
         {!started ? (
