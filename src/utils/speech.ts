@@ -1,3 +1,5 @@
+import type { Language } from './translations';
+
 // Speech utility using Web Speech API
 export class SpeechService {
   private speechSynthesis: SpeechSynthesis | null = null;
@@ -9,7 +11,7 @@ export class SpeechService {
     }
   }
 
-  speak(text: string, lang: string = 'es-ES'): void {
+  speak(text: string, language: Language = 'es'): void {
     if (!this.speechSynthesis) {
       console.warn('Speech synthesis not supported');
       return;
@@ -20,7 +22,7 @@ export class SpeechService {
 
     // Create new utterance
     this.utterance = new SpeechSynthesisUtterance(text);
-    this.utterance.lang = lang;
+    this.utterance.lang = language === 'es' ? 'es-ES' : 'en-US';
     this.utterance.rate = 0.8; // Slightly slower for better clarity
     this.utterance.pitch = 1;
     this.utterance.volume = 1;

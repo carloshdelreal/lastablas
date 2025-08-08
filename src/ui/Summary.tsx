@@ -1,4 +1,5 @@
-// Summary view for the end of a session
+import { getTranslation } from '../utils/translations';
+import type { Language } from '../utils/translations';
 
 type Question = {
   multiplicand: number;
@@ -14,6 +15,7 @@ type Answer = {
 type SummaryProps = {
   answers: Answer[];
   correctCount: number;
+  language: Language;
   onBack: () => void;
   onRepeat: () => void;
 };
@@ -21,23 +23,26 @@ type SummaryProps = {
 export default function Summary({
   answers,
   correctCount,
+  language,
   onBack,
   onRepeat,
 }: SummaryProps): JSX.Element {
+  const t = getTranslation(language);
+
   return (
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
-      <h2 className="text-xl font-semibold">📊 Resumen</h2>
+      <h2 className="text-xl font-semibold">{t.summary}</h2>
       <p>
-        🎯 Preguntas: {answers.length} · ✅ Aciertos: {correctCount} · 📈 Precisión:{' '}
+        {t.questions}: {answers.length} · {t.correctAnswers}: {correctCount} · {t.accuracy}:{' '}
         {answers.length ? Math.round((correctCount / answers.length) * 100) : 0}%
       </p>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead>
             <tr className="text-left">
-              <th className="py-1 pr-4">❓ Pregunta</th>
-              <th className="py-1 pr-4">Tu respuesta</th>
-              <th className="py-1">🎯 Resultado</th>
+              <th className="py-1 pr-4">{t.question}</th>
+              <th className="py-1 pr-4">{t.yourResponse}</th>
+              <th className="py-1">{t.result}</th>
             </tr>
           </thead>
           <tbody>
@@ -52,9 +57,9 @@ export default function Summary({
                   <td className="py-1 pr-4">{a.given || '(vacío)'}</td>
                   <td className="py-1">
                     {ok ? (
-                      <span className="text-emerald-600">✅ Correcta</span>
+                      <span className="text-emerald-600">{t.correct}</span>
                     ) : (
-                      <span className="text-rose-600">❌ Incorrecta</span>
+                      <span className="text-rose-600">{t.incorrect}</span>
                     )}
                   </td>
                 </tr>
@@ -67,13 +72,13 @@ export default function Summary({
         onClick={onBack}
         className="inline-flex items-center justify-center rounded-md bg-gray-200 dark:bg-gray-700 px-4 py-2 font-medium hover:bg-gray-300 dark:hover:bg-gray-600"
       >
-        🎯 Practica otra tabla
+        {t.practiceAnotherTable}
       </button>
       <button
         onClick={onRepeat}
         className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium shadow hover:bg-indigo-500 ml-2"
       >
-        🔄 Repetir
+        {t.repeat}
       </button>
     </section>
   );

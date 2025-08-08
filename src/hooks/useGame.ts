@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { buildQuestions, isCorrectAnswer, parseTables, shuffle } from '../game/logic';
 import type { Answer, Question } from '../game/types';
+import type { Language } from '../utils/translations';
 
 export function useGame() {
   const [tablesInput, setTablesInput] = useState<string>('');
@@ -8,6 +9,7 @@ export function useGame() {
   const [rangeTo, setRangeTo] = useState<number>(10);
   const [repeatErrors, setRepeatErrors] = useState<boolean>(true);
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(true);
+  const [language, setLanguage] = useState<Language>('es');
 
   const [deck, setDeck] = useState<Question[]>([]);
   const [current, setCurrent] = useState<Question | null>(null);
@@ -70,6 +72,8 @@ export function useGame() {
     setRepeatErrors,
     voiceEnabled,
     setVoiceEnabled,
+    language,
+    setLanguage,
     // game state
     deck,
     current,
