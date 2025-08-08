@@ -79,13 +79,13 @@ export default function Started(props: StartedProps): JSX.Element {
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
       <div className="flex items-baseline justify-between">
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          Progreso: {solvedUnique}/{totalQuestions}
+          📊 Progreso: {solvedUnique}/{totalQuestions}
         </p>
         <div className="flex items-center gap-4">
           {speechService.isSupported() && (
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                Voz
+                🎤 Voz
               </span>
               <button
                 onClick={() => setLocalVoiceEnabled(!localVoiceEnabled)}
@@ -104,7 +104,7 @@ export default function Started(props: StartedProps): JSX.Element {
             </div>
           )}
           <p className="text-sm">
-            Aciertos:{' '}
+            🎯 Aciertos:{' '}
             <span className="font-semibold text-emerald-600">{correctCount}</span>
           </p>
         </div>
@@ -137,11 +137,11 @@ export default function Started(props: StartedProps): JSX.Element {
       </div>
       {answers.length > 0 && (
         <div className="text-sm text-gray-600 dark:text-gray-300">
-          Última respuesta:{' '}
+          📝 Última respuesta:{' '}
           {answers[answers.length - 1].correct ? (
-            <span className="text-emerald-600 font-medium">Correcta</span>
+            <span className="text-emerald-600 font-medium">✅ Correcta</span>
           ) : (
-            <span className="text-rose-600 font-medium">Incorrecta</span>
+            <span className="text-rose-600 font-medium">❌ Incorrecta</span>
           )}
         </div>
       )}
