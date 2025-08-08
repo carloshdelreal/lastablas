@@ -2,6 +2,8 @@ import InputField from '../components/InputField';
 import { parseTables } from '../game/logic';
 import { useState } from 'react';
 import { speechService } from '../utils/speech';
+import { getTranslation } from '../utils/translations';
+import type { Language } from '../utils/translations';
 
 type SetupProps = {
   tablesInput: string;
@@ -14,6 +16,7 @@ type SetupProps = {
   setRepeatErrors: (value: boolean) => void;
   voiceEnabled: boolean;
   setVoiceEnabled: (value: boolean) => void;
+  language: Language;
   onStart: () => void;
 };
 
@@ -29,10 +32,12 @@ export default function Setup(props: SetupProps): JSX.Element {
     setRepeatErrors,
     voiceEnabled,
     setVoiceEnabled,
+    language,
     onStart,
   } = props;
 
   const [showError, setShowError] = useState(false);
+  const t = getTranslation(language);
 
   // Parse current tables input to get selected tables
   const selectedTables = parseTables(tablesInput);
@@ -47,6 +52,14 @@ export default function Setup(props: SetupProps): JSX.Element {
     } else {
       // Add table
       newTables = [...selectedTables, tableNumber].sort((a, b) => a - b);
+      
+      // Provide voice feedback when adding a table
+      if (voiceEnabled && speechService.isSupported()) {
+        const tableText = language === 'es' 
+          ? `tabla ${tableNumber}`
+          : `table ${tableNumber}`;
+        speechService.speak(tableText, language);
+      }
     }
     
     // Convert back to string format
@@ -71,7 +84,7 @@ export default function Setup(props: SetupProps): JSX.Element {
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          🎯 Tablas disponibles
+          {t.availableTables}
         </label>
         <div className="grid grid-cols-5 gap-2">
           {Array.from({ length: 10 }, (_, i) => i + 1).map(tableNumber => {
@@ -93,7 +106,7 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
         {showError && selectedTables.length === 0 && (
           <p className="text-sm text-red-600 dark:text-red-400 mt-1">
-            ⚠️ Seleccione al menos una tabla por favor
+            {t.selectAtLeastOneTable}
           </p>
         )}
       </div>
@@ -101,7 +114,7 @@ export default function Setup(props: SetupProps): JSX.Element {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <InputField
-            label="📊 Desde"
+            label={t.from}
             type="number"
             value={rangeFrom}
             onChange={e => setRangeFrom(Number(e.target.value))}
@@ -109,7 +122,7 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
         <div>
           <InputField
-            label="📈 Hasta"
+            label={t.to}
             type="number"
             value={rangeTo}
             onChange={e => setRangeTo(Number(e.target.value))}
@@ -125,13 +138,13 @@ export default function Setup(props: SetupProps): JSX.Element {
             onChange={e => setRepeatErrors(e.target.checked)}
             className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
           />
-          🔄 Repetir errores hasta acertarlos
+          {t.repeatErrors}
         </label>
         
         {speechService.isSupported() && (
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-700 dark:text-gray-300">
-              🎤 Activar voz
+              {t.activateVoice}
             </span>
             <button
               onClick={() => setVoiceEnabled(!voiceEnabled)}
@@ -156,7 +169,7 @@ export default function Setup(props: SetupProps): JSX.Element {
           onClick={handleStart}
           className="mt-2 w-full items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          🚀 Comenzar
+          {t.start}
         </button>
       </div>
     </section>

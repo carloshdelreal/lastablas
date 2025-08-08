@@ -1,5 +1,7 @@
 import { type RefObject, useEffect, useState } from 'react';
 import { speechService } from '../utils/speech';
+import { getTranslation } from '../utils/translations';
+import type { Language } from '../utils/translations';
 
 type Question = {
   multiplicand: number;
@@ -23,6 +25,7 @@ type StartedProps = {
   onSubmit: () => void;
   inputRef: RefObject<HTMLInputElement>;
   voiceEnabled?: boolean;
+  language: Language;
 };
 
 export default function Started(props: StartedProps): JSX.Element {
@@ -37,9 +40,11 @@ export default function Started(props: StartedProps): JSX.Element {
     onSubmit,
     inputRef,
     voiceEnabled = false,
+    language,
   } = props;
 
   const [localVoiceEnabled, setLocalVoiceEnabled] = useState(voiceEnabled);
+  const t = getTranslation(language);
 
   // Update local voice state when prop changes
   useEffect(() => {
@@ -49,11 +54,12 @@ export default function Started(props: StartedProps): JSX.Element {
   // Speak the question when it changes (only if voice is enabled)
   useEffect(() => {
     if (localVoiceEnabled && speechService.isSupported()) {
-      const questionText = `${current.multiplicand} por ${current.multiplier}`;
-      speechService.speak(questionText);
+      const questionText = language === 'es' 
+        ? `${current.multiplicand} por ${current.multiplier}`
+        : `${current.multiplicand} times ${current.multiplier}`;
+      speechService.speak(questionText, language);
     }
-  }, [current, localVoiceEnabled]);
-
+  }, [current, localVoiceEnabled, language]);
 
   const handleSubmit = () => {
     // Check if the current answer is correct before submitting
@@ -64,10 +70,12 @@ export default function Started(props: StartedProps): JSX.Element {
     if (localVoiceEnabled && speechService.isSupported()) {
       if (isCorrect) {
         const result = current.multiplicand * current.multiplier;
-        const feedbackText = `${current.multiplicand} por ${current.multiplier} es ${result}`;
-        speechService.speak(feedbackText);
+        const feedbackText = language === 'es'
+          ? `${current.multiplicand} por ${current.multiplier} es ${result}`
+          : `${current.multiplicand} times ${current.multiplier} is ${result}`;
+        speechService.speak(feedbackText, language);
       } else {
-        speechService.speak("error");
+        speechService.speak(t.error, language);
       }
     }
     
@@ -79,13 +87,13 @@ export default function Started(props: StartedProps): JSX.Element {
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
       <div className="flex items-baseline justify-between">
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          📊 Progreso: {solvedUnique}/{totalQuestions}
+          {t.progress}: {solvedUnique}/{totalQuestions}
         </p>
         <div className="flex items-center gap-4">
           {speechService.isSupported() && (
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                🎤 Voz
+                {t.voice}
               </span>
               <button
                 onClick={() => setLocalVoiceEnabled(!localVoiceEnabled)}
@@ -104,7 +112,7 @@ export default function Started(props: StartedProps): JSX.Element {
             </div>
           )}
           <p className="text-sm">
-            🎯 Aciertos:{' '}
+            {t.correctAnswers}:{' '}
             <span className="font-semibold text-emerald-600">{correctCount}</span>
           </p>
         </div>
@@ -123,7 +131,7 @@ export default function Started(props: StartedProps): JSX.Element {
             if (e.key === 'Enter') handleSubmit();
           }}
           className="flex-1 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          placeholder="Tu respuesta"
+          placeholder={t.yourAnswer}
           ref={inputRef}
         />
         <button
@@ -132,16 +140,16 @@ export default function Started(props: StartedProps): JSX.Element {
           type="button"
           className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Responder
+          {t.answer}
         </button>
       </div>
       {answers.length > 0 && (
         <div className="text-sm text-gray-600 dark:text-gray-300">
-          📝 Última respuesta:{' '}
+          {t.lastAnswer}:{' '}
           {answers[answers.length - 1].correct ? (
-            <span className="text-emerald-600 font-medium">✅ Correcta</span>
+            <span className="text-emerald-600 font-medium">{t.correct}</span>
           ) : (
-            <span className="text-rose-600 font-medium">❌ Incorrecta</span>
+            <span className="text-rose-600 font-medium">{t.incorrect}</span>
           )}
         </div>
       )}

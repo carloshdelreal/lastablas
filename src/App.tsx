@@ -2,7 +2,9 @@ import { useEffect, useRef } from 'react';
 import Started from './ui/Started';
 import Setup from './ui/Setup';
 import Summary from './ui/Summary';
+import LanguageSelector from './components/LanguageSelector';
 import { useGame } from './hooks/useGame';
+import { getTranslation } from './utils/translations';
 
 function App(): JSX.Element {
   const {
@@ -16,6 +18,8 @@ function App(): JSX.Element {
     setRepeatErrors,
     voiceEnabled,
     setVoiceEnabled,
+    language,
+    setLanguage,
     deck,
     current,
     answer,
@@ -29,6 +33,7 @@ function App(): JSX.Element {
   } = useGame();
 
   const answerInputRef = useRef<HTMLInputElement | null>(null);
+  const t = getTranslation(language);
 
   const handleSubmit = (): void => {
     submit();
@@ -53,9 +58,12 @@ function App(): JSX.Element {
     <div className="min-h-full flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-2xl">
         <header className="mb-6">
-          <h1 className="text-3xl font-bold tracking-tight">🧮 Las Tablas</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-bold tracking-tight">{t.title}</h1>
+            <LanguageSelector language={language} onLanguageChange={setLanguage} voiceEnabled={voiceEnabled} />
+          </div>
           <p className="text-gray-600 dark:text-gray-300">
-            ✨ Practica las tablas de multiplicar de forma divertida
+            {t.subtitle}
           </p>
         </header>
         {!started ? (
@@ -70,6 +78,7 @@ function App(): JSX.Element {
             setRepeatErrors={setRepeatErrors}
             voiceEnabled={voiceEnabled}
             setVoiceEnabled={setVoiceEnabled}
+            language={language}
             onStart={start}
           />
         ) : current ? (
@@ -84,11 +93,13 @@ function App(): JSX.Element {
             onSubmit={handleSubmit}
             inputRef={answerInputRef}
             voiceEnabled={voiceEnabled}
+            language={language}
           />
         ) : (
           <Summary
             answers={answers}
             correctCount={correctCount}
+            language={language}
             onBack={reset}
             onRepeat={start}
           />
