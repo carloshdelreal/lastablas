@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx"],"version":"5.9.2"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/inputfield.tsx","./src/game/logic.ts","./src/game/types.ts","./src/hooks/usegame.ts","./src/ui/setup.tsx","./src/ui/started.tsx","./src/ui/summary.tsx"],"version":"5.9.2"}
