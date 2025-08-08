@@ -54,9 +54,25 @@ export default function Started(props: StartedProps): JSX.Element {
     }
   }, [current, localVoiceEnabled]);
 
-  const handleSpeakQuestion = () => {
-    const questionText = `${current.multiplicand} por ${current.multiplier}`;
-    speechService.speak(questionText);
+
+  const handleSubmit = () => {
+    // Check if the current answer is correct before submitting
+    const isCorrect = current && answer.trim() !== '' && 
+      Number(answer.trim()) === current.multiplicand * current.multiplier;
+    
+    // Provide immediate voice feedback if voice is enabled
+    if (localVoiceEnabled && speechService.isSupported()) {
+      if (isCorrect) {
+        const result = current.multiplicand * current.multiplier;
+        const feedbackText = `${current.multiplicand} por ${current.multiplier} es ${result}`;
+        speechService.speak(feedbackText);
+      } else {
+        speechService.speak("error");
+      }
+    }
+    
+    // Call the original onSubmit
+    onSubmit();
   };
 
   return (
@@ -97,17 +113,6 @@ export default function Started(props: StartedProps): JSX.Element {
         <div className="text-5xl font-extrabold tracking-tight">
           {current.multiplicand} × {current.multiplier} = ?
         </div>
-        {speechService.isSupported() && (
-          <button
-            onClick={handleSpeakQuestion}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            </svg>
-            Escuchar pregunta
-          </button>
-        )}
       </div>
       <div className="flex flex-col items-center gap-3">
         <input
@@ -115,14 +120,14 @@ export default function Started(props: StartedProps): JSX.Element {
           value={answer}
           onChange={e => setAnswer(e.target.value)}
           onKeyDown={e => {
-            if (e.key === 'Enter') onSubmit();
+            if (e.key === 'Enter') handleSubmit();
           }}
           className="flex-1 rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Tu respuesta"
           ref={inputRef}
         />
         <button
-          onClick={onSubmit}
+          onClick={handleSubmit}
           onPointerDown={e => e.preventDefault()}
           type="button"
           className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
