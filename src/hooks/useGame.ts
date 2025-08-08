@@ -3,7 +3,7 @@ import { buildQuestions, isCorrectAnswer, parseTables, shuffle } from '../game/l
 import type { Answer, Question } from '../game/types';
 
 export function useGame() {
-  const [tablesInput, setTablesInput] = useState<string>('2-10');
+  const [tablesInput, setTablesInput] = useState<string>('');
   const [rangeFrom, setRangeFrom] = useState<number>(1);
   const [rangeTo, setRangeTo] = useState<number>(10);
   const [repeatErrors, setRepeatErrors] = useState<boolean>(true);
