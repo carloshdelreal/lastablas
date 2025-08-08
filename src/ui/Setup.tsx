@@ -1,6 +1,7 @@
 import InputField from '../components/InputField';
 import { parseTables } from '../game/logic';
 import { useState } from 'react';
+import { speechService } from '../utils/speech';
 
 type SetupProps = {
   tablesInput: string;
@@ -11,6 +12,8 @@ type SetupProps = {
   setRangeTo: (value: number) => void;
   repeatErrors: boolean;
   setRepeatErrors: (value: boolean) => void;
+  voiceEnabled: boolean;
+  setVoiceEnabled: (value: boolean) => void;
   onStart: () => void;
 };
 
@@ -24,6 +27,8 @@ export default function Setup(props: SetupProps): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    voiceEnabled,
+    setVoiceEnabled,
     onStart,
   } = props;
 
@@ -112,15 +117,39 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
       </div>
 
-      <label className="inline-flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={repeatErrors}
-          onChange={e => setRepeatErrors(e.target.checked)}
-          className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-        />
-        Repetir errores hasta acertarlos
-      </label>
+      <div className="space-y-2">
+        <label className="inline-flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={repeatErrors}
+            onChange={e => setRepeatErrors(e.target.checked)}
+            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+          />
+          Repetir errores hasta acertarlos
+        </label>
+        
+        {speechService.isSupported() && (
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Activar voz
+            </span>
+            <button
+              onClick={() => setVoiceEnabled(!voiceEnabled)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                voiceEnabled
+                  ? 'bg-indigo-600'
+                  : 'bg-gray-200 dark:bg-gray-700'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  voiceEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="flex justify-end">
         <button
