@@ -15,11 +15,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'yarn'
+          node-version: '20'
+          cache: 'npm install'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Start deployment
         uses: bobheadxi/deployments@v1
