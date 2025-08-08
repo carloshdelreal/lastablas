@@ -1,6 +1,7 @@
 {
   "name": "lastablas-web",
   "private": true,
+  "homepage": "https://carloshdelrean.github.io/lastablas",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
