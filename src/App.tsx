@@ -90,7 +90,14 @@ function App(): JSX.Element {
         )}
       </div>
       <footer className="mt-10 text-xs text-gray-500">
-        Hecho con React + Vite + Tailwind
+        Hecho con ❤️ por{' '}
+        <a
+          href="https://carloshdelreal.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Carlos Del Real
+        </a>
       </footer>
     </div>
   );
