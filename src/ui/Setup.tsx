@@ -14,6 +14,8 @@ type SetupProps = {
   setRangeTo: (value: number) => void;
   repeatErrors: boolean;
   setRepeatErrors: (value: boolean) => void;
+  easyMode: boolean;
+  setEasyMode: (value: boolean) => void;
   voiceEnabled: boolean;
   setVoiceEnabled: (value: boolean) => void;
   language: Language;
@@ -30,6 +32,8 @@ export default function Setup(props: SetupProps): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    easyMode,
+    setEasyMode,
     voiceEnabled,
     setVoiceEnabled,
     language,
@@ -130,7 +134,7 @@ export default function Setup(props: SetupProps): JSX.Element {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 space-x-2">
         <label className="inline-flex items-center gap-2 text-sm">
           <input
             type="checkbox"
@@ -140,7 +144,17 @@ export default function Setup(props: SetupProps): JSX.Element {
           />
           {t.repeatErrors}
         </label>
-        
+
+        <label className="inline-flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={easyMode}
+            onChange={e => setEasyMode(e.target.checked)}
+            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+          />
+          {t.easyMode}
+        </label>
+
         {speechService.isSupported() && (
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-700 dark:text-gray-300">
