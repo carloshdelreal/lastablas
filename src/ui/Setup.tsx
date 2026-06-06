@@ -14,6 +14,8 @@ type SetupProps = {
   setRangeTo: (value: number) => void;
   repeatErrors: boolean;
   setRepeatErrors: (value: boolean) => void;
+  requireCorrect: boolean;
+  setRequireCorrect: (value: boolean) => void;
   easyMode: boolean;
   setEasyMode: (value: boolean) => void;
   voiceEnabled: boolean;
@@ -32,6 +34,8 @@ export default function Setup(props: SetupProps): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    requireCorrect,
+    setRequireCorrect,
     easyMode,
     setEasyMode,
     voiceEnabled,
@@ -143,6 +147,16 @@ export default function Setup(props: SetupProps): JSX.Element {
             className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
           />
           {t.repeatErrors}
+        </label>
+
+        <label className="inline-flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={requireCorrect}
+            onChange={e => setRequireCorrect(e.target.checked)}
+            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+          />
+          {t.requireCorrect}
         </label>
 
         <label className="inline-flex items-center gap-2 text-sm">
