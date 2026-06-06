@@ -16,6 +16,8 @@ function App(): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    easyMode,
+    setEasyMode,
     voiceEnabled,
     setVoiceEnabled,
     language,
@@ -27,6 +29,7 @@ function App(): JSX.Element {
     answers,
     started,
     totalQuestions,
+    elapsedMs,
     start,
     submit,
     reset,
@@ -76,6 +79,8 @@ function App(): JSX.Element {
             setRangeTo={setRangeTo}
             repeatErrors={repeatErrors}
             setRepeatErrors={setRepeatErrors}
+            easyMode={easyMode}
+            setEasyMode={setEasyMode}
             voiceEnabled={voiceEnabled}
             setVoiceEnabled={setVoiceEnabled}
             language={language}
@@ -99,6 +104,7 @@ function App(): JSX.Element {
           <Summary
             answers={answers}
             correctCount={correctCount}
+            elapsedMs={elapsedMs}
             language={language}
             onBack={reset}
             onRepeat={start}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { buildQuestions, isCorrectAnswer, parseTables, shuffle } from '../game/logic';
 import type { Answer, Question } from '../game/types';
 import type { Language } from '../utils/translations';
@@ -8,6 +8,7 @@ export function useGame() {
   const [rangeFrom, setRangeFrom] = useState<number>(1);
   const [rangeTo, setRangeTo] = useState<number>(10);
   const [repeatErrors, setRepeatErrors] = useState<boolean>(true);
+  const [easyMode, setEasyMode] = useState<boolean>(false);
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(true);
   const [language, setLanguage] = useState<Language>('es');
 
@@ -17,18 +18,23 @@ export function useGame() {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [started, setStarted] = useState<boolean>(false);
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
+  const [elapsedMs, setElapsedMs] = useState<number>(0);
+  const startTimeRef = useRef<number>(0);
 
   const parsedTables = useMemo(() => parseTables(tablesInput), [tablesInput]);
 
   const start = (): void => {
     const baseTables = parsedTables.length ? parsedTables : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const questions = shuffle(buildQuestions(baseTables, rangeFrom, rangeTo));
+    const built = buildQuestions(baseTables, rangeFrom, rangeTo);
+    const questions = easyMode ? built : shuffle(built);
     setTotalQuestions(questions.length);
     setDeck(questions.slice(1));
     setCurrent(questions[0] ?? null);
     setAnswers([]);
     setStarted(true);
     setAnswer('');
+    setElapsedMs(0);
+    startTimeRef.current = Date.now();
   };
 
   const submit = (): void => {
@@ -42,13 +48,22 @@ export function useGame() {
 
     setAnswers(prev => [...prev, record]);
 
-    const nextDeck = deck.slice(1);
+    // `deck` holds the upcoming questions (current is tracked separately).
+    const upcoming = deck.slice();
     if (repeatErrors && !ok) {
-      const idx = Math.floor(Math.random() * (nextDeck.length + 1));
-      nextDeck.splice(idx, 0, current);
+      // In easy mode keep the in-order flow by appending at the end,
+      // otherwise reinsert at a random position.
+      const idx = easyMode
+        ? upcoming.length
+        : Math.floor(Math.random() * (upcoming.length + 1));
+      upcoming.splice(idx, 0, current);
     }
-    setDeck(nextDeck);
-    setCurrent(nextDeck[0] ?? null);
+    const next = upcoming[0] ?? null;
+    if (!next) {
+      setElapsedMs(Date.now() - startTimeRef.current);
+    }
+    setCurrent(next);
+    setDeck(upcoming.slice(1));
     setAnswer('');
   };
 
@@ -70,6 +85,8 @@ export function useGame() {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    easyMode,
+    setEasyMode,
     voiceEnabled,
     setVoiceEnabled,
     language,
@@ -82,6 +99,7 @@ export function useGame() {
     answers,
     started,
     totalQuestions,
+    elapsedMs,
     // actions
     start,
     submit,

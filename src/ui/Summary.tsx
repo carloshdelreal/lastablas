@@ -1,4 +1,4 @@
-import { getTranslation } from '../utils/translations';
+import { formatDuration, getTranslation } from '../utils/translations';
 import type { Language } from '../utils/translations';
 
 type Question = {
@@ -15,6 +15,7 @@ type Answer = {
 type SummaryProps = {
   answers: Answer[];
   correctCount: number;
+  elapsedMs: number;
   language: Language;
   onBack: () => void;
   onRepeat: () => void;
@@ -23,6 +24,7 @@ type SummaryProps = {
 export default function Summary({
   answers,
   correctCount,
+  elapsedMs,
   language,
   onBack,
   onRepeat,
@@ -32,6 +34,9 @@ export default function Summary({
   return (
     <section className="space-y-4 bg-white/60 dark:bg-white/5 rounded-xl p-4 shadow-sm ring-1 ring-gray-200 dark:ring-white/10">
       <h2 className="text-xl font-semibold">{t.summary}</h2>
+      <p className="text-lg font-medium text-indigo-600 dark:text-indigo-400">
+        {t.completedIn} {formatDuration(elapsedMs, language)}
+      </p>
       <p>
         {t.questions}: {answers.length} · {t.correctAnswers}: {correctCount} · {t.accuracy}:{' '}
         {answers.length ? Math.round((correctCount / answers.length) * 100) : 0}%
