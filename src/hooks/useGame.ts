@@ -8,6 +8,7 @@ export function useGame() {
   const [rangeFrom, setRangeFrom] = useState<number>(1);
   const [rangeTo, setRangeTo] = useState<number>(10);
   const [repeatErrors, setRepeatErrors] = useState<boolean>(true);
+  const [requireCorrect, setRequireCorrect] = useState<boolean>(true);
   const [easyMode, setEasyMode] = useState<boolean>(false);
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(true);
   const [language, setLanguage] = useState<Language>('es');
@@ -48,6 +49,12 @@ export function useGame() {
 
     setAnswers(prev => [...prev, record]);
 
+    // Don't skip errors: keep the same question until answered correctly.
+    if (requireCorrect && !ok) {
+      setAnswer('');
+      return;
+    }
+
     // `deck` holds the upcoming questions (current is tracked separately).
     const upcoming = deck.slice();
     if (repeatErrors && !ok) {
@@ -85,6 +92,8 @@ export function useGame() {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    requireCorrect,
+    setRequireCorrect,
     easyMode,
     setEasyMode,
     voiceEnabled,

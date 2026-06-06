@@ -11,6 +11,7 @@ export interface Translations {
   from: string;
   to: string;
   repeatErrors: string;
+  requireCorrect: string;
   easyMode: string;
   activateVoice: string;
   start: string;
@@ -56,6 +57,7 @@ export const translations: Record<Language, Translations> = {
     from: '📊 Desde',
     to: '📈 Hasta',
     repeatErrors: '🔄 Repetir errores hasta acertarlos',
+    requireCorrect: '✍️ Responder hasta acertar',
     easyMode: '😌 Modo fácil (tablas en orden)',
     activateVoice: '🎤 Activar voz',
     start: '🚀 Comenzar',
@@ -99,6 +101,7 @@ export const translations: Record<Language, Translations> = {
     from: '📊 From',
     to: '📈 To',
     repeatErrors: '🔄 Repeat errors until correct',
+    requireCorrect: '✍️ Answer until correct',
     easyMode: '😌 Easy mode (tables in order)',
     activateVoice: '🎤 Activate voice',
     start: '🚀 Start',

@@ -16,6 +16,8 @@ function App(): JSX.Element {
     setRangeTo,
     repeatErrors,
     setRepeatErrors,
+    requireCorrect,
+    setRequireCorrect,
     easyMode,
     setEasyMode,
     voiceEnabled,
@@ -79,6 +81,8 @@ function App(): JSX.Element {
             setRangeTo={setRangeTo}
             repeatErrors={repeatErrors}
             setRepeatErrors={setRepeatErrors}
+            requireCorrect={requireCorrect}
+            setRequireCorrect={setRequireCorrect}
             easyMode={easyMode}
             setEasyMode={setEasyMode}
             voiceEnabled={voiceEnabled}
