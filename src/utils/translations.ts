@@ -29,6 +29,11 @@ export interface Translations {
   summary: string;
   questions: string;
   accuracy: string;
+  completedIn: string;
+  minute: string;
+  minutes: string;
+  second: string;
+  seconds: string;
   question: string;
   yourResponse: string;
   result: string;
@@ -69,6 +74,11 @@ export const translations: Record<Language, Translations> = {
     summary: '📊 Resumen',
     questions: '🎯 Preguntas',
     accuracy: '📈 Precisión',
+    completedIn: '⏱️ Lo completaste en',
+    minute: 'minuto',
+    minutes: 'minutos',
+    second: 'segundo',
+    seconds: 'segundos',
     question: '❓ Pregunta',
     yourResponse: '✏️ Tu respuesta',
     result: '🎯 Resultado',
@@ -107,6 +117,11 @@ export const translations: Record<Language, Translations> = {
     summary: '📊 Summary',
     questions: '🎯 Questions',
     accuracy: '📈 Accuracy',
+    completedIn: '⏱️ You completed it in',
+    minute: 'minute',
+    minutes: 'minutes',
+    second: 'second',
+    seconds: 'seconds',
     question: '❓ Question',
     yourResponse: '✏️ Your response',
     result: '🎯 Result',
@@ -120,4 +135,18 @@ export const translations: Record<Language, Translations> = {
 
 export function getTranslation(language: Language): Translations {
   return translations[language];
+}
+
+export function formatDuration(ms: number, language: Language): string {
+  const t = translations[language];
+  const totalSeconds = Math.max(0, Math.round(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  const secondsPart = `${seconds} ${seconds === 1 ? t.second : t.seconds}`;
+  if (minutes > 0) {
+    const minutesPart = `${minutes} ${minutes === 1 ? t.minute : t.minutes}`;
+    return `${minutesPart} ${secondsPart}`;
+  }
+  return secondsPart;
 } 

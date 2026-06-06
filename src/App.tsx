@@ -29,6 +29,7 @@ function App(): JSX.Element {
     answers,
     started,
     totalQuestions,
+    elapsedMs,
     start,
     submit,
     reset,
@@ -103,6 +104,7 @@ function App(): JSX.Element {
           <Summary
             answers={answers}
             correctCount={correctCount}
+            elapsedMs={elapsedMs}
             language={language}
             onBack={reset}
             onRepeat={start}

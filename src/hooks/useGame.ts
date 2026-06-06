@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { buildQuestions, isCorrectAnswer, parseTables, shuffle } from '../game/logic';
 import type { Answer, Question } from '../game/types';
 import type { Language } from '../utils/translations';
@@ -18,6 +18,8 @@ export function useGame() {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [started, setStarted] = useState<boolean>(false);
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
+  const [elapsedMs, setElapsedMs] = useState<number>(0);
+  const startTimeRef = useRef<number>(0);
 
   const parsedTables = useMemo(() => parseTables(tablesInput), [tablesInput]);
 
@@ -31,6 +33,8 @@ export function useGame() {
     setAnswers([]);
     setStarted(true);
     setAnswer('');
+    setElapsedMs(0);
+    startTimeRef.current = Date.now();
   };
 
   const submit = (): void => {
@@ -54,7 +58,11 @@ export function useGame() {
         : Math.floor(Math.random() * (upcoming.length + 1));
       upcoming.splice(idx, 0, current);
     }
-    setCurrent(upcoming[0] ?? null);
+    const next = upcoming[0] ?? null;
+    if (!next) {
+      setElapsedMs(Date.now() - startTimeRef.current);
+    }
+    setCurrent(next);
     setDeck(upcoming.slice(1));
     setAnswer('');
   };
@@ -91,6 +99,7 @@ export function useGame() {
     answers,
     started,
     totalQuestions,
+    elapsedMs,
     // actions
     start,
     submit,
